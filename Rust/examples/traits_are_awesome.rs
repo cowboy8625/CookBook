@@ -1,6 +1,4 @@
-fn main() {
-
-}
+fn main() {}
 
 trait Magic {
     fn cast(&self);
@@ -30,5 +28,3 @@ impl Magic for SpellSword {
         println!("Cast Spell");
     }
 }
-
-

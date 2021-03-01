@@ -14,10 +14,9 @@ enum FooBros {
 
 fn main() {
     use FooBros::*;
-    let vec = vec![One(Foo1), Two( Foo2 ), Three( Foo3 )];
+    let vec = vec![One(Foo1), Two(Foo2), Three(Foo3)];
     dbg!(vec);
 }
-
 
 fn _option_example(num: i32) -> Option<i32> {
     if num > 0 {

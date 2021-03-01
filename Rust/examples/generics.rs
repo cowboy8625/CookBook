@@ -1,4 +1,4 @@
-use std::ops::{Add, Sub, AddAssign, SubAssign};
+use std::ops::{Add, AddAssign, Sub, SubAssign};
 
 fn main() {
     let num = add(4, 6);
@@ -6,7 +6,7 @@ fn main() {
     let num1 = sub(4, 6);
     println!("num = {}", num);
 
-    let mut p = Point{x: 30, y: 50};
+    let mut p = Point { x: 30, y: 50 };
     println!("Point({}, {})", p.x, p.y);
 
     p.add(5, 5);
@@ -16,11 +16,14 @@ fn main() {
     println!("Point({}, {})", p.x, p.y);
 }
 
-fn sub<T>(x:T, y:T) -> T where T: Sub<Output=T> {
+fn sub<T>(x: T, y: T) -> T
+where
+    T: Sub<Output = T>,
+{
     x - y
 }
 
-fn add<T: Add<Output = T>>(x:T, y:T) -> T {
+fn add<T: Add<Output = T>>(x: T, y: T) -> T {
     x + y
 }
 
@@ -30,11 +33,17 @@ struct Point<T> {
 }
 
 impl<T> Point<T> {
-    fn add(&mut self, x:T, y:T) where T: AddAssign {
+    fn add(&mut self, x: T, y: T)
+    where
+        T: AddAssign,
+    {
         self.x += x;
         self.y += y;
     }
-    fn sub(&mut self, x:T, y:T) where T: SubAssign {
+    fn sub(&mut self, x: T, y: T)
+    where
+        T: SubAssign,
+    {
         self.x -= x;
         self.y -= y;
     }

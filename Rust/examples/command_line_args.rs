@@ -4,7 +4,7 @@ use std::env;
 fn main() {
     let args: Vec<String> = env::args().collect();
     let size: usize = 1;
-    if &args.len() > &size{
+    if &args.len() > &size {
         println!("{}", args[1]);
     }
 }

@@ -1,83 +1,71 @@
-use std::io::stdin;
-use std::io::stdout;
-use std::io::Write;
+use std::fmt::{self, Display};
+use std::io::{stdin, stdout, Write};
+
+const WIN: [(usize, usize, usize); 8] = [
+    (0, 1, 2),
+    (3, 4, 5),
+    (6, 7, 8),
+    (0, 4, 8),
+    (2, 4, 6),
+    (0, 3, 6),
+    (1, 4, 7),
+    (2, 5, 8),
+];
+
+type Board = [Sign; 9];
 
 fn main() {
-    let mut board: Board = [' '; 9];
-    let mut sign = 'X';
+    let mut board: Board = [Sign::E; 9];
+    let mut sign = Sign::X;
     loop {
         clear();
-        render(board);
-        let num = input("Pick a number 1 - 9:> ");
-        if is_empty(board, num) {
-            set_spot(&mut board, num, sign);
-            sign = if sign == 'X' { 'O' } else { 'X' };
-        }
+        render(&board, &sign);
         let (win, winner) = check_board(board);
         if win {
-            clear();
-            render(board);
             match winner {
-                'X' => break println!("Looks like X own this one!"),
-                'O' => break println!("O is the winner!!"),
-                'C' => break println!("Cat got this one!"),
-                ' ' => {}
-                _ => break println!("Something went wrong."),
+                Sign::X => break println!("Looks like X own this one!"),
+                Sign::O => break println!("O is the winner!!"),
+                Sign::C => break println!("Cat got this one!"),
+                Sign::E => {}
             }
+        }
+        let num = input("Pick a number 1 - 9:> ");
+        if let Some(Sign::E) = board.get(num) {
+            board.get_mut(num).map(|s| *s = sign);
+            sign = if sign == Sign::X { Sign::O } else { Sign::X };
         }
     }
 }
 
-type Board = [char; 9];
+#[derive(Debug, Copy, Clone, PartialEq)]
+enum Sign { X, O, C, E, }
 
-fn check_board(board: Board) -> (bool, char) {
-    let win = [
-        (0, 1, 2),
-        (3, 4, 5),
-        (6, 7, 8),
-        (0, 4, 8),
-        (2, 4, 6),
-        (0, 3, 6),
-        (1, 4, 7),
-        (2, 5, 8),
-    ];
-    let mut count = 0;
-    for &(a, b, c) in win.iter() {
+impl Display for Sign {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let sign = match self {
+            Self::X => 'X',
+            Self::O => 'O',
+            Self::C => 'C',
+            Self::E => ' ',
+        };
+        write!(f, "{}", sign)
+    }
+}
+
+fn check_board(board: Board) -> (bool, Sign) {
+    for &(a, b, c) in WIN.iter() {
         if board[a] == board[b] && board[a] == board[c] {
             return (true, board[a]);
         }
     }
-    for &ch in board.iter() {
-        if ch == ' ' {
-            count += 1;
-        }
+    if !board.contains(&Sign::E) {
+        return (true, Sign::C);
     }
-    if count == 0 {
-        return (true, 'C');
-    }
-    (false, ' ')
-}
-
-fn is_empty(board: Board, num: usize) -> bool {
-    if board[num] == ' ' {
-        true
-    } else {
-        false
-    }
-}
-
-fn set_spot(spots: &mut Board, i: usize, sign: char) {
-    spots[i] = sign
+    (false, Sign::E)
 }
 
 fn clear() {
-    match std::process::Command::new("clear").status() {
-        Ok(_) => {}
-        Err(_) => match std::process::Command::new("cls").status() {
-            Ok(_) => {}
-            Err(_) => {}
-        },
-    }
+    println!("\x1b[2J\x1b[0;0H");
 }
 
 fn input(message: &str) -> usize {
@@ -89,7 +77,7 @@ fn input(message: &str) -> usize {
         let num = out.trim().parse::<usize>();
         match num {
             Ok(n) => match n {
-                1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 => return n - 1,
+                1..=9 => return n - 1,
                 _ => println!("The number needs to be between 1 - 9."),
             },
             Err(e) => println!("{}", e),
@@ -98,8 +86,8 @@ fn input(message: &str) -> usize {
     }
 }
 
-fn render(spots: Board) {
-    println!(" {} | {} | {} ", spots[0], spots[1], spots[2]);
+fn render(spots: &Board, sign: &Sign) {
+    println!(" {} | {} | {}  [{}: Turn]", spots[0], spots[1], spots[2], sign);
     println!("-----------");
     println!(" {} | {} | {} ", spots[3], spots[4], spots[5]);
     println!("-----------");

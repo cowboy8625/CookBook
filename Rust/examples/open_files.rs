@@ -8,8 +8,8 @@ fn main() {
     };
     let mut contents = String::new();
     match file.read_to_string(&mut contents) {
-        Ok(_) => {},
-        Err(_) => {},
+        Ok(_) => {}
+        Err(_) => {}
     }
     println!("File: {}", contents);
     let my_string = include!("text.txt");
