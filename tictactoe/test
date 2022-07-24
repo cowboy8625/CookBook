@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ "$1" == "c" ]
+then
+    ./test.py | ./C/tictactoe.out;
+elif [ "$1" == "cpp" ]
+then
+    ./test.py | ./Cpp/tictactoe.out;
+elif [ "$1" == "csharp" ]
+then
+    ./test.py | dotnet run;
+elif [ "$1" == "python" ]
+then
+    ./test.py | python3 ./Python/__main__.py;
+elif [ "$1" == "java" ]
+then
+    ./test.py | ./Java/build run;
+elif [ "$1" == "rust" ]
+then
+    cd Rust; ./test.py | cargo run --release; cd ..
+elif [ "$1" == "help" ]
+then
+    echo "c"
+    echo "cpp"
+    echo "csharp"
+    echo "haskell"
+    echo "java"
+    echo "python"
+    echo "rust"
+fi

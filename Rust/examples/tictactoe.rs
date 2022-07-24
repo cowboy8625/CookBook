@@ -38,7 +38,12 @@ fn main() {
 }
 
 #[derive(Debug, Copy, Clone, PartialEq)]
-enum Sign { X, O, C, E, }
+enum Sign {
+    X,
+    O,
+    C,
+    E,
+}
 
 impl Display for Sign {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -72,7 +77,7 @@ fn input(message: &str) -> usize {
     let mut out = String::new();
     loop {
         print!("{}", message);
-        stdout().flush().unwrap();
+        stdout().flush().expect("Failed to flush to stdout.");
         stdin().read_line(&mut out).expect("Failed to read line");
         let num = out.trim().parse::<usize>();
         match num {
@@ -80,16 +85,26 @@ fn input(message: &str) -> usize {
                 1..=9 => return n - 1,
                 _ => println!("The number needs to be between 1 - 9."),
             },
-            Err(e) => println!("{}", e),
+            Err(_) => println!("'{}' is not a number.", out.trim()),
         }
         out.clear();
     }
 }
 
 fn render(spots: &Board, sign: &Sign) {
-    println!(" {} | {} | {}  [{}: Turn]", spots[0], spots[1], spots[2], sign);
-    println!("-----------");
-    println!(" {} | {} | {} ", spots[3], spots[4], spots[5]);
-    println!("-----------");
-    println!(" {} | {} | {} ", spots[6], spots[7], spots[8]);
+    println!("                    The board is numbered");
+    println!(
+        " {} │ {} │ {}  [{}: Turn]    1 │ 2 │ 3",
+        spots[0], spots[1], spots[2], sign
+    );
+    println!("⎼⎼⎼╄⎼⎼⎼╄⎼⎼⎼             ⎼⎼⎼╄⎼⎼⎼╄⎼⎼⎼");
+    println!(
+        " {} │ {} │ {}               4 │ 5 │ 6 ",
+        spots[3], spots[4], spots[5]
+    );
+    println!("⎼⎼⎼╄⎼⎼⎼╄⎼⎼⎼             ⎼⎼⎼╄⎼⎼⎼╄⎼⎼⎼");
+    println!(
+        " {} │ {} │ {}               7 │ 8 │ 9 ",
+        spots[6], spots[7], spots[8]
+    );
 }

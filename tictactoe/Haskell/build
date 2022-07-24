@@ -1,0 +1,26 @@
+#!/bin/bash
+
+NAME="ttt";
+
+build () {
+    ghc Main.hs -o ${NAME}
+}
+
+clean () {
+    rm *.class
+}
+
+run () {
+    ./${NAME}
+}
+
+if [ "$1" == "build" ]
+then
+    build;
+elif [ "$1" == "run" ]
+then
+    build && run;
+elif [ "$1" == "clean" ]
+then
+    clean;
+fi

@@ -2,6 +2,6 @@
 name = "rust-book"
 version = "0.1.0"
 authors = ["cowboy8625 <cowboy8625@protonmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]

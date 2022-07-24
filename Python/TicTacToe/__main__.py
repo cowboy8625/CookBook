@@ -1,8 +1,3 @@
-"""
-This is a Test Base for all new languages for me.
-This was the first game I made in programing and has  special place with me.
-I want to come back and make magic squares to work on the win_check function
-"""
 import os
 
 def reset():
@@ -50,6 +45,6 @@ def main():
             if op.lower() == "n":
                 exit()
             sign, spots = reset()
-    
+
 if __name__ == "__main__":
     main()
