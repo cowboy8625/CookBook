@@ -1,5 +1,0 @@
-This is first line in Text.txt file for test of I/O.
-
-This is new data from python script
-This is new data from python script
-This is new data from python script
