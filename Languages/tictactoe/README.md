@@ -1,0 +1,32 @@
+# Languages
+- [C](./C/README.md)
+- [Cpp](./Cpp/README.md)
+- [Csharp](./Csharp/README.md)
+- [Java](./Java/README.md)
+- [Python](./Python/README.md)
+- [Rust](./Rust/README.md)
+- [Go](./Go/README.md)
+- [Lua](./Lua/README.md)
+- [JavaScript](./JavaScript/README.md)
+
+# todo
+- Common Lisp
+- Ocaml
+- Haskell
+- [Nim](https://nim-lang.org/)
+- Closure
+- Fsharp
+- TypeScript
+- [Julia](https://julialang.org)
+- Kotlin
+- [Dart](https://dart.dev)
+- Bash
+- Odin
+- [Ruby](https://www.ruby-lang.org)
+- [Perl]()
+- [Forth](https://forth-standard.org)
+- [R]()
+- Assembly
+- BrainFuck
+- [Zig](https://ziglang.org)
+- [Dascript](https://dascript.org)
