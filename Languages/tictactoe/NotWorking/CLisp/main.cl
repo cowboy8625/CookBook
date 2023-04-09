@@ -1,15 +1,5 @@
-(defun is_num (str)
-  (if (typep str 'string)
-    (numberp (read-from-string str)))
-    ())
-
-(defun get-input () (read-line))
-
-(defun input (msg)
-    (format t msg)
-    (get-input))
-
 (defparameter *spots* (list "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" ))
+(defparameter *player* "X")
 
 (defun render (spots)
   (format t "~$ | ~$ | ~$~%~$ | ~$ | ~$~%~$ | ~$ | ~$~%"
@@ -25,8 +15,24 @@
   (nth 9 spots)))
 
 (defun setspot (idx sign spots)
-  (setf (nth idx spots) sign)
-  )
+  (setf (nth idx spots) sign))
 
+(defun input (msg)
+  (format t "~%~$" msg)
+  (force-output)
+  (let ((x (read)))
+    (if (numberp x)
+        (numberq x)
+        (input msg))))
 
-(print (input "number> "))
+(defun swap-player () (
+      if (== *player* "X")
+      (setq *player* "O")
+      (setq *player* "X")))
+
+(defun main () 
+  (render *spots*)
+  (setf (nth (input "number> ") *spots*) *player*)
+  (swap-player))
+
+(main)

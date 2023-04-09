@@ -7,7 +7,7 @@ fn main() {
     let mut board: Board = [Sign::E; 9];
     let mut sign = Sign::O;
     let mut loc;
-    while !is_win(&board) || is_board_free(&board) {
+    while !is_win(&board) && is_board_free(&board) {
         sign = if sign == Sign::X { Sign::O } else { Sign::X };
         render(&board, &sign);
         loc = input("Input 1-9 :> ");
@@ -44,13 +44,13 @@ impl Display for Sign {
 
 fn is_win(b: &Board) -> bool {
     (b[0] == b[1]) && (b[1] == b[2]) && (b[0] != Sign::E)
-        || (b[3] == b[4]) && (b[4] == b[5]) && (b[3] != Sign::E)
-        || (b[6] == b[7]) && (b[7] == b[8]) && (b[6] != Sign::E)
-        || (b[0] == b[3]) && (b[3] == b[6]) && (b[3] != Sign::E)
-        || (b[1] == b[4]) && (b[4] == b[7]) && (b[1] != Sign::E)
-        || (b[2] == b[5]) && (b[5] == b[8]) && (b[2] != Sign::E)
-        || (b[0] == b[4]) && (b[4] == b[8]) && (b[0] != Sign::E)
-        || (b[2] == b[4]) && (b[4] == b[6]) && (b[2] != Sign::E)
+    || (b[3] == b[4]) && (b[4] == b[5]) && (b[3] != Sign::E)
+    || (b[6] == b[7]) && (b[7] == b[8]) && (b[6] != Sign::E)
+    || (b[0] == b[3]) && (b[3] == b[6]) && (b[3] != Sign::E)
+    || (b[1] == b[4]) && (b[4] == b[7]) && (b[1] != Sign::E)
+    || (b[2] == b[5]) && (b[5] == b[8]) && (b[2] != Sign::E)
+    || (b[0] == b[4]) && (b[4] == b[8]) && (b[0] != Sign::E)
+    || (b[2] == b[4]) && (b[4] == b[6]) && (b[2] != Sign::E)
 }
 
 fn is_board_free(board: &Board) -> bool {
@@ -76,7 +76,7 @@ fn input(message: &str) -> usize {
 }
 
 fn render(spots: &Board, sign: &Sign) {
-    clear();
+    // clear();
     println!("                    The board is numbered");
     println!(
         " {} │ {} │ {}  [{}: Turn]    1 │ 2 │ 3",
