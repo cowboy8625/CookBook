@@ -1,52 +1,68 @@
 const std = @import("std");
+const WIDTH: usize = 100;
 
-fn isAlive(a: bool, b: bool, c: bool) bool {
-    const Bits = packed struct { bool, bool, bool };
-    switch (@bitCast(u3, Bits{ true, true, true })) {
-        @bitCast(u3, Bits{ true, false, true }) => return true,
-        @bitCast(u3, Bits{ false, false, false }) => return false,
-        else => unrechable,
-    }
-}
 // fn isAlive(a: bool, b: bool, c: bool) bool {
-//     if (a && b && c) {
-//         return false;
-//     } else if (a && b && !c) {
-//         return true;
-//     } else if (a && !b && c) {
-//         return true;
-//     } else if (a && !b && !c) {
-//         return false;
-//     } else if (!a && b && !c) {
-//         return true;
-//     } else if (!a && !b && c) {
-//         return true;
-//     } else if (!a && !b && !c) {
-//         return false;
+//     const Bits = packed struct { bool, bool, bool };
+//     switch (@bitCast(u3, Bits{ true, true, true })) {
+//         @bitCast(u3, Bits{ true, false, true }) => return true,
+//         @bitCast(u3, Bits{ false, false, false }) => return false,
+//         else => unrechable,
 //     }
-//     unrechable;
 // }
-
-pub fn main() !void {
-    std.debug.print("{}\n", isAlive(true, true, true));
-    // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    std.debug.print("All your {s} are belong to us.\n", .{"codebase"});
-
-    // stdout is for the actual output of your application, for example if you
-    // are implementing gzip, then only the compressed bytes should be sent to
-    // stdout, not any debugging messages.
-    const stdout_file = std.io.getStdOut().writer();
-    var bw = std.io.bufferedWriter(stdout_file);
-    const stdout = bw.writer();
-
-    try stdout.print("Run `zig build test` to run the tests.\n", .{});
-
-    try bw.flush(); // don't forget to flush!
+fn isAlive(a: bool, b: bool, c: bool) bool {
+    if (a and b and c) {
+        return false;
+    } else if (a and b and !c) {
+        return true;
+    } else if (a and !b and c) {
+        return true;
+    } else if (a and !b and !c) {
+        return false;
+    } else if (!a and b and !c) {
+        return true;
+    } else if (!a and !b and c) {
+        return true;
+    } else if (!a and !b and !c) {
+        return false;
+    }
+    return false;
 }
 
-test "simple test" {
-    var list = std.ArrayList(i32).init(std.testing.allocator);
-    defer list.deinit(); // try commenting this out and see if zig detects the memory leak!
-    try list.append(42);
-    try std.testing.expectEqual(@as(i32, 42), list.pop());
+fn display(array: []bool) void {
+    for (array) |elem| {
+        var item: u8 = undefined;
+        if (elem) {
+            item = '#';
+        } else {
+            item = ' ';
+        }
+        std.debug.print("{c}", .{item});
+    }
+    std.debug.print("\n", .{});
+}
+
+fn range(len: usize) []const void {
+    return @as([*]void, undefined)[0..len];
+}
+
+fn next_gen(last_gen: []bool) [WIDTH]bool {
+    var next: [WIDTH]bool = undefined;
+    for (range(WIDTH)) |_, i| {
+        const a: bool = last_gen[((i -% 1) +% WIDTH) % WIDTH];
+        const b: bool = last_gen[i];
+        const c: bool = last_gen[((i + 1) + WIDTH) % WIDTH];
+        next[i] = isAlive(a, b, c);
+    }
+    return next;
+}
+
+pub fn main() void {
+    var generation: [WIDTH]bool = undefined;
+    generation[WIDTH - 1] = true;
+    while (true) {
+        display(&generation);
+        generation = next_gen(&generation);
+        std.time.sleep(100000000);
+    }
+    display(&generation);
 }
