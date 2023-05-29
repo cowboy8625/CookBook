@@ -18,11 +18,12 @@ fn main() {
 }
 
 fn update(old: Vec<Cell>) -> Vec<Cell> {
+    let len = old.len();
     (0..WIDTH)
         .map(|i| {
-            let a = old[(i.wrapping_sub(1).wrapping_add(old.len())) % old.len()];
+            let a = old[i.wrapping_sub(1).rem_euclid(len)];
             let b = old[i];
-            let c = old[(i.wrapping_add(1).wrapping_add(old.len())) % old.len()];
+            let c = old[i.wrapping_add(1).rem_euclid(len)];
             is_alive(a, b, c)
         })
         .collect()
