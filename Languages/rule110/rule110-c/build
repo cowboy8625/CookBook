@@ -1,0 +1,2 @@
+gcc main.c -g -std=c99 -c -I /opt/raylib/src -o main.o &&
+gcc main.o -s -Wall -std=c11 -I/opt/raylib/src -L/opt/raylib/release/libs/linux -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 && ./a.out
